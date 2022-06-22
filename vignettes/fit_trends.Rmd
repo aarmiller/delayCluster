@@ -1,0 +1,41 @@
+---
+title: "Fit Trends"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{fit_trends}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette demonstrates how to fit trends for a given set of data
+
+```{r setup}
+library(delayCluster)
+library(dplyr)
+library(magrittr)
+```
+
+## Load Count Data 
+
+```{r}
+data("synth_dx_counts")
+data("synth_visit_counts")
+
+daily_dx_counts <- synth_dx_counts %>%
+  left_join(synth_visit_counts,.,by = "days_since_index") %>%
+  mutate(frac = n/n_patient_visits) %>%
+  group_by(dx) %>%
+  mutate(norm_n = (frac-min(frac))/(max(frac)-min(frac))) %>%
+  mutate(period = -days_since_index) %>%
+  ungroup() %>% 
+  select(code=dx,period,value = norm_n)
+
+````
+

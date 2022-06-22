@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+build_steps.R
+inst/doc
+data/tmp
+tmp_examples
+.DS_Store
+R/tmp

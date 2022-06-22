@@ -1,0 +1,7 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+build_steps.R
+R/tmp
+data/tmp
+tmp_examples
+

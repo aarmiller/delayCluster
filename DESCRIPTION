@@ -1,0 +1,29 @@
+Package: delayCluster
+Type: Package
+Title: The package contains functions for performing clustering of potential SSD codes
+Version: 0.1.0
+Author: Aaron Miller
+Maintainer: Aaron Miller <aaron-miller@uiowa.edu>
+Description: This project provides clustering functions to cluster diagnosis,
+ procedure, and medication codes prior to a particular diagnosis.
+License: GPL
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    delaySim,
+    dplyr,
+    forcats,
+    ggplot2,
+    icd,
+    magrittr,
+    purrr,
+    stringr,
+    tibble,
+    tidyr
+RoxygenNote: 7.1.1
+Suggests: 
+    rmarkdown,
+    knitr
+VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)

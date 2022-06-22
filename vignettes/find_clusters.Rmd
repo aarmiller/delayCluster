@@ -1,0 +1,77 @@
+---
+title: "Find and Evaluate Clusters"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{find_clusters}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup,message = FALSE}
+library(delayCluster)
+library(dplyr)
+library(magrittr)
+library(purrr)
+library(tidyr)
+```
+
+### Load Count Data 
+
+```{r}
+data("synth_fits_7day")
+```
+
+
+### Find Clusters
+
+Find clusters for `k=15`
+```{r}
+clust_data <- find_clusters(synth_fits_7day,
+                            normalize = TRUE,
+                            k = 15)
+```
+
+Search cluster for a particular term (or set of terms) to retrieve codes
+```{r}
+search_clust_terms(clust_data = clust_data,
+                   search_term = c("cough"))
+
+```
+
+Search clusters for a particular code and return the focal cluster
+```{r}
+search_clusters(clust_data = clust_data,
+                search_code = c("7862"))
+```
+
+### Evaluate multiple values of k  
+
+Get clusters for different k=5:25
+```{r}
+clust_res <- tibble(k=5:25) %>%
+  mutate(clusters = map(k,~find_clusters(fit_data = synth_fits_7day,
+                                         k =.x)))
+
+```
+Extract the focal cluster
+```{r}
+clust_res <- clust_res %>%
+  mutate(focal_cluster=map(clusters,~search_clusters(clust_data = .,
+                                                     search_code = "7862")$cluster_data))
+```
+Count how often each code appeared in the focal cluster
+```{r}
+clust_res %>%
+  select(k,focal_cluster) %>%
+  unnest(focal_cluster) %>%
+  count(code,description) %>%
+  arrange(desc(n))
+```
+
