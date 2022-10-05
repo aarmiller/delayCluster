@@ -47,7 +47,8 @@ find_clusters <- function(fit_data,normalize = TRUE, k = 5,
 
   return(list(clusters = tmp,
               centers = tmp_centers,
-              distances = tmp_distances))
+              distances = tmp_distances,
+              wss = km.res$tot.withinss))
 
 }
 
